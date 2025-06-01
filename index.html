@@ -12,51 +12,48 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #000; /* Dark background */
-            /* Added background image for a realistic calculator feel */
-            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF/png?text=Dark+Texture'); /* Placeholder for a dark texture */
-            background-size: cover; /* Cover the entire background */
-            background-repeat: no-repeat; /* Do not repeat the image */
-            background-attachment: fixed; /* Keep the background fixed during scroll */
+            background-color: #d4d4d4; /* Light gray background from the icon */
             margin: 0;
-            padding: 20px; /* Add some padding for smaller screens */
+            padding: 20px;
             box-sizing: border-box;
         }
 
         #calculator {
-            background-color: #1c1c1c; /* Darker background for calculator */
-            border-radius: 20px;
+            background-color: #333; /* Darker gray for calculator body */
+            border-radius: 30px; /* More rounded corners */
             overflow: hidden;
             width: 100%;
-            max-width: 360px; /* Max width for desktop */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 360px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
             display: flex;
             flex-direction: column;
-            height: 100%; /* Ensure it takes full height on mobile */
-            max-height: 600px; /* Max height for desktop */
-            position: relative; /* For positioning the history modal */
+            height: 100%;
+            max-height: 600px;
+            position: relative;
         }
 
         #display-container {
             flex: 2;
             display: flex;
-            flex-direction: column; /* Stack history and main display */
+            flex-direction: column;
             justify-content: flex-end;
             align-items: flex-end;
             padding: 20px;
-            background-color: #000;
+            background-color: #222; /* Very dark gray for display background */
+            /* Added glow effect to the display container */
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.3); /* Cyan glow */
         }
 
         #history-display {
-            font-size: 30px; /* Smaller font for history */
-            color: #a5a5a5; /* Lighter color for history */
+            font-size: 30px;
+            color: #888; /* Lighter gray for history text */
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
             max-width: 100%;
-            height: 40px; /* Fixed height for history line */
-            margin-bottom: 5px; /* Space between history and main display */
+            height: 40px;
+            margin-bottom: 5px;
         }
 
         #main-display {
@@ -84,30 +81,34 @@
             font-size: 35px;
             border-radius: 50%;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            color: #fff;
-            background-color: #333;
-            aspect-ratio: 1; /* Make buttons circular */
+            /* Updated transition for smoother click animation */
+            transition: background-color 0.2s ease, box-shadow 0.1s ease, transform 0.1s ease, filter 0.1s ease;
+            color: #000; /* Default text color for white buttons */
+            background-color: #fff; /* Default background for number buttons */
+            aspect-ratio: 1;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3); /* Raised effect */
         }
 
         .calc-button:active {
-            filter: brightness(1.2); /* Simple press effect */
+            filter: brightness(0.9); /* Subtle press effect */
+            transform: translateY(2px) scale(0.98); /* Slight shift down and scale down on press */
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); /* Smaller shadow on press */
         }
 
         .calc-button.clear-button,
-        .calc-button.sign-button {
+        .calc-button.sign-button,
+        .calc-button.history-button { /* History button also light gray */
             background-color: #a5a5a5;
             color: #000;
         }
 
         .calc-button.operator-button,
         .calc-button.equals-button {
-            background-color: #f09a36;
+            background-color: #ff9500; /* Apple calculator orange */
+            color: #fff; /* White text for orange buttons */
         }
 
         .calc-button.history-button {
-            background-color: #555; /* A distinct color for the history button */
-            color: #fff;
             font-size: 20px; /* Smaller font for "History" to fit */
         }
 
@@ -118,12 +119,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent overlay */
+            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Ensure it's on top */
-            display: none; /* Hidden by default */
+            z-index: 1000;
+            display: none;
         }
 
         #history-content {
@@ -133,7 +134,7 @@
             width: 90%;
             max-width: 300px;
             max-height: 80%;
-            overflow-y: auto; /* Scrollable history */
+            overflow-y: auto;
             color: #fff;
             position: relative;
         }
@@ -155,7 +156,7 @@
             padding: 8px 0;
             border-bottom: 1px solid #333;
             font-size: 18px;
-            word-wrap: break-word; /* Allow long expressions to wrap */
+            word-wrap: break-word;
         }
 
         #history-list li:last-child {
@@ -169,7 +170,7 @@
             background: none;
             border: none;
             font-size: 24px;
-            color: red; /* Changed color to red */
+            color: red;
             cursor: pointer;
             padding: 5px;
             border-radius: 50%;
@@ -183,16 +184,16 @@
         /* Responsive adjustments for smaller screens */
         @media (max-width: 480px) {
             #main-display {
-                font-size: 60px; /* Smaller font on small screens */
+                font-size: 60px;
             }
             #history-display {
-                font-size: 24px; /* Adjust history font for small screens */
+                font-size: 24px;
             }
             .calc-button {
-                font-size: 30px; /* Smaller button text on small screens */
+                font-size: 30px;
             }
             .calc-button.history-button {
-                font-size: 18px; /* Further reduce history font on small screens */
+                font-size: 18px;
             }
             #calculator {
                 border-radius: 15px;
