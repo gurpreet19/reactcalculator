@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Calculator">
+    <meta name="theme-color" content="#333">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -39,19 +45,17 @@
             justify-content: flex-end;
             align-items: flex-end;
             padding: 20px;
-            background-color: #222; /* Very dark gray for display background (reverted) */
+            background-color: #222; /* Very dark gray for display background */
             transition: box-shadow 0.3s ease-in-out; /* Smooth transition for glow */
-            /* Removed the .display-glow class by default */
         }
 
-        /* Reverted glow effect to be applied only when active */
         .display-glow {
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.3); /* Cyan glow */
         }
 
         #history-display {
             font-size: 30px;
-            color: #888; /* Lighter gray for history text (reverted) */
+            color: #888; /* Lighter gray for history text */
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
@@ -63,7 +67,7 @@
 
         #main-display {
             font-size: 80px;
-            color: #fff; /* White text for main display (reverted) */
+            color: #fff; /* White text for main display */
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
@@ -272,7 +276,6 @@
                 historyDisplay.textContent = currentExpression;
             }
 
-            // Function to manage glow effect (reverted to previous behavior)
             function toggleGlow(activate) {
                 if (activate) {
                     displayContainer.classList.add('display-glow');
@@ -303,7 +306,6 @@
                     }
                 }
                 updateDisplays();
-                // Glow remains active as long as numbers or operators are being entered
                 toggleGlow(true);
             }
 
@@ -392,7 +394,6 @@
                     operator = null;
                     waitingForOperand = false;
                     updateDisplays();
-                    // Glow remains active if the result is not '0' or 'Error'
                     toggleGlow(displayValue !== '0' && displayValue !== 'Error');
                 }
             }
@@ -405,7 +406,7 @@
                 currentExpression = '';
                 calculationHistory = [];
                 updateDisplays();
-                toggleGlow(false); // Deactivate glow on all clear
+                toggleGlow(false);
             }
 
             function handleClearEntry() {
@@ -417,7 +418,6 @@
                     currentExpression = '';
                 }
                 updateDisplays();
-                // Deactivate glow if display becomes '0'
                 toggleGlow(displayValue !== '0');
             }
 
@@ -482,8 +482,21 @@
                 }
             });
 
+            // Service Worker registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(registration => {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+
             updateDisplays();
-            toggleGlow(false); // Ensure no glow on initial load
+            toggleGlow(false);
         });
     </script>
 </body>
