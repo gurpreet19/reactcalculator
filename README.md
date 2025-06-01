@@ -10,6 +10,7 @@ Real-time History: See your ongoing calculation displayed above the main result.
 Full Calculation History: View a comprehensive list of all your previous calculations in a handy pop-up.
 Responsive Design: Adapts seamlessly to various screen sizes, from mobile phones to desktop monitors, ensuring a consistent user experience.
 Uniform Buttons: All buttons are consistently sized and shaped for a clean and intuitive layout.
+
 🚀 How to Use
 Simply open the index.html file in your web browser. Click the number and operator buttons to perform calculations.
 
@@ -23,6 +24,5 @@ CSS3: For styling, including Flexbox and CSS Grid for layout, and media queries 
 JavaScript: For all the calculator's logic and interactivity.
 Tailwind CSS: Used via CDN for rapid and efficient styling.
 Google Fonts (Inter): For a clean and modern typography.
-✍️ Author
-Gurpreet
+
 
