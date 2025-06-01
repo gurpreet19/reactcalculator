@@ -39,14 +39,19 @@
             justify-content: flex-end;
             align-items: flex-end;
             padding: 20px;
-            background-color: #222; /* Very dark gray for display background */
-            /* Added glow effect to the display container */
+            background-color: #222; /* Very dark gray for display background (reverted) */
+            transition: box-shadow 0.3s ease-in-out; /* Smooth transition for glow */
+            /* Removed the .display-glow class by default */
+        }
+
+        /* Reverted glow effect to be applied only when active */
+        .display-glow {
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.3); /* Cyan glow */
         }
 
         #history-display {
             font-size: 30px;
-            color: #888; /* Lighter gray for history text */
+            color: #888; /* Lighter gray for history text (reverted) */
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
@@ -58,7 +63,7 @@
 
         #main-display {
             font-size: 80px;
-            color: #fff;
+            color: #fff; /* White text for main display (reverted) */
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
@@ -81,7 +86,6 @@
             font-size: 35px;
             border-radius: 50%;
             cursor: pointer;
-            /* Updated transition for smoother click animation */
             transition: background-color 0.2s ease, box-shadow 0.1s ease, transform 0.1s ease, filter 0.1s ease;
             color: #000; /* Default text color for white buttons */
             background-color: #fff; /* Default background for number buttons */
@@ -251,6 +255,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const mainDisplay = document.getElementById('main-display');
             const historyDisplay = document.getElementById('history-display');
+            const displayContainer = document.getElementById('display-container');
             const historyModal = document.getElementById('history-modal');
             const historyList = document.getElementById('history-list');
             const closeHistoryButton = document.getElementById('close-history-button');
@@ -260,15 +265,22 @@
             let firstValue = '';
             let waitingForOperand = false;
             let currentExpression = '';
-            let calculationHistory = []; // Array to store completed calculations
+            let calculationHistory = [];
 
-            // Function to update both displays
             function updateDisplays() {
                 mainDisplay.textContent = displayValue;
                 historyDisplay.textContent = currentExpression;
             }
 
-            // Handle number input
+            // Function to manage glow effect (reverted to previous behavior)
+            function toggleGlow(activate) {
+                if (activate) {
+                    displayContainer.classList.add('display-glow');
+                } else {
+                    displayContainer.classList.remove('display-glow');
+                }
+            }
+
             function handleNumberInput(num) {
                 if (waitingForOperand) {
                     displayValue = String(num);
@@ -291,9 +303,10 @@
                     }
                 }
                 updateDisplays();
+                // Glow remains active as long as numbers or operators are being entered
+                toggleGlow(true);
             }
 
-            // Handle operator input
             function handleOperatorInput(nextOperator) {
                 const inputValue = parseFloat(displayValue);
 
@@ -309,9 +322,9 @@
                 operator = nextOperator;
                 currentExpression = `${firstValue} ${operator}`;
                 updateDisplays();
+                toggleGlow(true);
             }
 
-            // Handle decimal input
             function handleDecimal() {
                 if (waitingForOperand) {
                     displayValue = '0.';
@@ -330,9 +343,9 @@
                     }
                 }
                 updateDisplays();
+                toggleGlow(true);
             }
 
-            // Perform calculation
             function performCalculation() {
                 const prevValue = parseFloat(firstValue);
                 const currentValue = parseFloat(displayValue);
@@ -364,7 +377,6 @@
                 return parseFloat(result.toFixed(10));
             }
 
-            // Handle equals
             function handleEquals() {
                 if (operator && firstValue !== '') {
                     const expressionBeforeEquals = `${firstValue} ${operator} ${displayValue}`;
@@ -372,7 +384,6 @@
                     displayValue = String(result);
                     currentExpression = `${expressionBeforeEquals} = ${displayValue}`;
 
-                    // Add to history only if the result is not an error
                     if (displayValue !== 'Error') {
                         calculationHistory.push(currentExpression);
                     }
@@ -381,21 +392,22 @@
                     operator = null;
                     waitingForOperand = false;
                     updateDisplays();
+                    // Glow remains active if the result is not '0' or 'Error'
+                    toggleGlow(displayValue !== '0' && displayValue !== 'Error');
                 }
             }
 
-            // Handle All Clear (AC) - Clears everything
             function handleAllClear() {
                 displayValue = '0';
                 operator = null;
                 firstValue = '';
                 waitingForOperand = false;
                 currentExpression = '';
-                calculationHistory = []; // Clear history array as well
+                calculationHistory = [];
                 updateDisplays();
+                toggleGlow(false); // Deactivate glow on all clear
             }
 
-            // Handle Clear Entry (C) - Clears only the current display value
             function handleClearEntry() {
                 displayValue = '0';
                 waitingForOperand = false;
@@ -405,9 +417,10 @@
                     currentExpression = '';
                 }
                 updateDisplays();
+                // Deactivate glow if display becomes '0'
+                toggleGlow(displayValue !== '0');
             }
 
-            // Handle sign change (±)
             function handleSignChange() {
                 displayValue = String(parseFloat(displayValue) * -1);
                 if (operator && firstValue !== '') {
@@ -416,11 +429,11 @@
                     currentExpression = displayValue;
                 }
                 updateDisplays();
+                toggleGlow(true);
             }
 
-            // Function to show history modal
             function showHistory() {
-                historyList.innerHTML = ''; // Clear previous history
+                historyList.innerHTML = '';
                 if (calculationHistory.length === 0) {
                     historyList.innerHTML = '<li class="text-center text-gray-500">No history yet.</li>';
                 } else {
@@ -430,15 +443,13 @@
                         historyList.appendChild(li);
                     });
                 }
-                historyModal.style.display = 'flex'; // Show the modal
+                historyModal.style.display = 'flex';
             }
 
-            // Function to hide history modal
             function hideHistory() {
-                historyModal.style.display = 'none'; // Hide the modal
+                historyModal.style.display = 'none';
             }
 
-            // Event listener for all buttons
             document.querySelectorAll('.calc-button').forEach(button => {
                 button.addEventListener('click', () => {
                     const type = button.dataset.type;
@@ -458,23 +469,21 @@
                         handleDecimal();
                     } else if (type === 'sign') {
                         handleSignChange();
-                    } else if (type === 'history') { // Handle history button click
+                    } else if (type === 'history') {
                         showHistory();
                     }
                 });
             });
 
-            // Event listener for closing history modal
             closeHistoryButton.addEventListener('click', hideHistory);
             historyModal.addEventListener('click', (event) => {
-                // Close modal if clicked outside the content area
                 if (event.target === historyModal) {
                     hideHistory();
                 }
             });
 
-
-            updateDisplays(); // Initial display update
+            updateDisplays();
+            toggleGlow(false); // Ensure no glow on initial load
         });
     </script>
 </body>
