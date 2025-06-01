@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -65,25 +65,19 @@
             max-width: 100%;
         }
 
-        .button-grid {
-            flex: 3;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 10px;
-        }
-
+        /* Custom button styling to override Bootstrap defaults for circular shape */
         .calc-button {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 35px;
-            border-radius: 50%;
+            border-radius: 50% !important; /* Make buttons circular */
             cursor: pointer;
             transition: background-color 0.2s ease;
             color: #fff;
             background-color: #333;
-            aspect-ratio: 1; /* Make buttons circular */
+            aspect-ratio: 1; /* Maintain aspect ratio for perfect circle */
+            border: none; /* Remove default button border */
         }
 
         .calc-button:active {
@@ -92,18 +86,18 @@
 
         .calc-button.clear-button,
         .calc-button.sign-button {
-            background-color: #a5a5a5;
-            color: #000;
+            background-color: #a5a5a5 !important;
+            color: #000 !important;
         }
 
         .calc-button.operator-button,
         .calc-button.equals-button {
-            background-color: #f09a36;
+            background-color: #f09a36 !important;
         }
 
         .calc-button.history-button {
-            background-color: #555; /* A distinct color for the history button */
-            color: #fff;
+            background-color: #555 !important; /* A distinct color for the history button */
+            color: #fff !important;
             font-size: 20px; /* Smaller font for "History" to fit */
         }
 
@@ -176,7 +170,7 @@
             background-color: #333;
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments for smaller screens */
         @media (max-width: 480px) {
             #main-display {
                 font-size: 60px; /* Smaller font on small screens */
@@ -200,36 +194,38 @@
     </style>
 </head>
 <body>
-    <div id="calculator" class="flex flex-col">
-        <div id="display-container" class="flex flex-col justify-end items-end p-5 bg-black">
-            <div id="history-display" class="text-gray-400 text-3xl text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-full"></div>
-            <div id="main-display" class="text-white text-8xl text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-full">0</div>
+    <div id="calculator" class="d-flex flex-column">
+        <div id="display-container" class="d-flex flex-column justify-content-end align-items-end p-4 bg-black">
+            <div id="history-display" class="text-secondary text-end overflow-hidden text-nowrap text-truncate w-100"></div>
+            <div id="main-display" class="text-white text-end overflow-hidden text-nowrap text-truncate w-100">0</div>
         </div>
-        <div class="button-grid">
-            <div class="calc-button clear-button" data-type="all-clear">AC</div>
-            <div class="calc-button clear-button" data-type="clear-entry">C</div>
-            <div class="calc-button sign-button" data-type="sign">±</div>
-            <div class="calc-button operator-button" data-type="operator" data-value="/">/</div>
+        <div class="container-fluid flex-grow-1 p-2">
+            <div class="row g-2">
+                <div class="col-3"><button class="calc-button clear-button w-100 h-100" data-type="all-clear">AC</button></div>
+                <div class="col-3"><button class="calc-button clear-button w-100 h-100" data-type="clear-entry">C</button></div>
+                <div class="col-3"><button class="calc-button sign-button w-100 h-100" data-type="sign">±</button></div>
+                <div class="col-3"><button class="calc-button operator-button w-100 h-100" data-type="operator" data-value="/">/</button></div>
 
-            <div class="calc-button" data-type="number" data-value="7">7</div>
-            <div class="calc-button" data-type="number" data-value="8">8</div>
-            <div class="calc-button" data-type="number" data-value="9">9</div>
-            <div class="calc-button operator-button" data-type="operator" data-value="*">*</div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="7">7</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="8">8</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="9">9</button></div>
+                <div class="col-3"><button class="calc-button operator-button w-100 h-100" data-type="operator" data-value="*">*</button></div>
 
-            <div class="calc-button" data-type="number" data-value="4">4</div>
-            <div class="calc-button" data-type="number" data-value="5">5</div>
-            <div class="calc-button" data-type="number" data-value="6">6</div>
-            <div class="calc-button operator-button" data-type="operator" data-value="-">-</div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="4">4</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="5">5</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="6">6</button></div>
+                <div class="col-3"><button class="calc-button operator-button w-100 h-100" data-type="operator" data-value="-">-</button></div>
 
-            <div class="calc-button" data-type="number" data-value="1">1</div>
-            <div class="calc-button" data-type="number" data-value="2">2</div>
-            <div class="calc-button" data-type="number" data-value="3">3</div>
-            <div class="calc-button operator-button" data-type="operator" data-value="+">+</div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="1">1</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="2">2</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="3">3</button></div>
+                <div class="col-3"><button class="calc-button operator-button w-100 h-100" data-type="operator" data-value="+">+</button></div>
 
-            <div class="calc-button" data-type="number" data-value="0">0</div>
-            <div class="calc-button" data-type="decimal" data-value=".">.</div>
-            <div class="calc-button history-button" data-type="history">History</div>
-            <div class="calc-button equals-button" data-type="equals">=</div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="number" data-value="0">0</button></div>
+                <div class="col-3"><button class="calc-button w-100 h-100" data-type="decimal" data-value=".">.</button></div>
+                <div class="col-3"><button class="calc-button history-button w-100 h-100" data-type="history">History</button></div>
+                <div class="col-3"><button class="calc-button equals-button w-100 h-100" data-type="equals">=</button></div>
+            </div>
         </div>
 
         <div id="history-modal">
@@ -237,11 +233,12 @@
                 <button id="close-history-button">&times;</button>
                 <h2>Calculation History</h2>
                 <ul id="history-list">
-                </ul>
+                    </ul>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const mainDisplay = document.getElementById('main-display');
@@ -417,7 +414,7 @@
             function showHistory() {
                 historyList.innerHTML = ''; // Clear previous history
                 if (calculationHistory.length === 0) {
-                    historyList.innerHTML = '<li class="text-center text-gray-500">No history yet.</li>';
+                    historyList.innerHTML = '<li class="text-center text-secondary">No history yet.</li>';
                 } else {
                     calculationHistory.forEach(item => {
                         const li = document.createElement('li');
