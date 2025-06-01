@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -14,6 +13,11 @@
             align-items: center;
             min-height: 100vh;
             background-color: #000; /* Dark background */
+            /* Added background image for a realistic calculator feel */
+            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF/png?text=Dark+Texture'); /* Placeholder for a dark texture */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-attachment: fixed; /* Keep the background fixed during scroll */
             margin: 0;
             padding: 20px; /* Add some padding for smaller screens */
             box-sizing: border-box;
@@ -165,7 +169,7 @@
             background: none;
             border: none;
             font-size: 24px;
-            color: red;
+            color: red; /* Changed color to red */
             cursor: pointer;
             padding: 5px;
             border-radius: 50%;
@@ -176,7 +180,7 @@
             background-color: #333;
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments for smaller screens */
         @media (max-width: 480px) {
             #main-display {
                 font-size: 60px; /* Smaller font on small screens */
@@ -200,8 +204,8 @@
     </style>
 </head>
 <body>
-    <div id="calculator" class="flex flex-col">
-        <div id="display-container" class="flex flex-col justify-end items-end p-5 bg-black">
+    <div id="calculator" class="flex flex-column">
+        <div id="display-container" class="flex flex-column justify-end align-items-end p-5 bg-black">
             <div id="history-display" class="text-gray-400 text-3xl text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-full"></div>
             <div id="main-display" class="text-white text-8xl text-right overflow-hidden whitespace-nowrap text-ellipsis max-w-full">0</div>
         </div>
